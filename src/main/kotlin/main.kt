@@ -1,15 +1,29 @@
 const val PRICE_UNIT = 1000u
-const val DISCOUNT_1LEVEL = 100u
+const val DISCOUNT_1LEVEL = 10u
 const val DISCOUNT_2LEVEL = 5u
-const val TEXT_AMOUNT_TO_BE_PAID = "Сумма к оплате"
-const val TEXT_RUB = "руб."
+
+fun discount(amountPreviousPeriod: UInt, subTotal: UInt): UInt {
+    var discountAmount = subTotal
+    if (amountPreviousPeriod <= 1_000u)
+        return discountAmount
+    discountAmount = subTotal - DISCOUNT_1LEVEL
+    if (amountPreviousPeriod in 1_001u..10_000u)
+        return discountAmount
+    discountAmount = subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
+    return discountAmount
+}
+
+fun discountVip(discountAmount: UInt, vipUser: Boolean): UInt {
+    val discountVip = discountAmount - (discountAmount / 100u)
+    return if (vipUser) {
+        discountVip
+    } else discountAmount
+}
 
 fun main() {
-    val totalAmount: UInt
-    val subTotalVipUser: UInt
 
     println("Добро пожаловать в магазин музыкальных альбомов МЕЛОДИЯ !")
-    println("Стоимость одного альбома $PRICE_UNIT $TEXT_RUB")
+    println("Стоимость одного альбома $PRICE_UNIT руб.")
     print("Введите желаемое количество альбомов для покупки: ")
     val amountMelodies = readLine()?.toUInt() ?: return
     val subTotal = PRICE_UNIT * amountMelodies
@@ -19,35 +33,16 @@ fun main() {
     val vipUser: Boolean
     val checkVipUser = readLine()
     vipUser = checkVipUser == "y"
+    val discountAmount = discount(amountPreviousPeriod, subTotal)
+    val vipUserAmount = discountVip(discountAmount, vipUser)
+    println("Сумма к оплате: $vipUserAmount руб.")
 
-    if (amountPreviousPeriod <= 1_000u && !vipUser) {
-        totalAmount = subTotal
-        print("$TEXT_AMOUNT_TO_BE_PAID $totalAmount $TEXT_RUB")
-        return
-    } else if (amountPreviousPeriod <= 1_000u && vipUser) {
-        totalAmount = subTotal - (subTotal / 100u)
-        println("$TEXT_AMOUNT_TO_BE_PAID $totalAmount $TEXT_RUB")
-        return
-    } else if (amountPreviousPeriod in 1_001u..10_000u && !vipUser) {
-        totalAmount = subTotal - DISCOUNT_1LEVEL
-        println("$TEXT_AMOUNT_TO_BE_PAID $totalAmount $TEXT_RUB")
-        return
-    } else if (amountPreviousPeriod in 1_001u..10_000u && vipUser) {
-        subTotalVipUser = subTotal - DISCOUNT_1LEVEL
-        totalAmount = subTotalVipUser - (subTotalVipUser / 100u)
-        println("$TEXT_AMOUNT_TO_BE_PAID $totalAmount $TEXT_RUB")
-        return
-    } else if (amountPreviousPeriod > 10_000u && !vipUser) {
-        totalAmount = subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
-        println("$TEXT_AMOUNT_TO_BE_PAID $totalAmount $TEXT_RUB")
-        return
-    } else if (amountPreviousPeriod > 10_000u && vipUser) {
-        subTotalVipUser = subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
-        totalAmount = subTotalVipUser - (subTotalVipUser / 100u)
-        println("$TEXT_AMOUNT_TO_BE_PAID $totalAmount $TEXT_RUB")
-        return
-    }
 }
+
+
+
+
+
 
 
 
