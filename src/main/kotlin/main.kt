@@ -11,14 +11,9 @@ fun discount(amountPreviousPeriod: UInt, subTotal: UInt): UInt {
 }
 
 fun discountVip(discountAmount: UInt, vipUser: Boolean): UInt {
-    val discountVip = discountAmount - (discountAmount / 100u)
-    return if (vipUser) {
-        discountVip
-    } else discountAmount
+    return if (vipUser) discountAmount - (discountAmount / 100u)
+    else discountAmount
 }
-
-
-
 
 fun main() {
 
