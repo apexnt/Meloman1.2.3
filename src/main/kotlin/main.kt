@@ -38,14 +38,3 @@ fun main() {
     println("Сумма к оплате: $vipUserAmount руб.")
 
 }
-
-
-
-
-
-
-
-
-
-
-
