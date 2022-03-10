@@ -3,13 +3,10 @@ const val DISCOUNT_1LEVEL = 10u
 const val DISCOUNT_2LEVEL = 5u
 
 fun discount(amountPreviousPeriod: UInt, subTotal: UInt): UInt {
-    var discountAmount = subTotal
-    if (amountPreviousPeriod <= 1_000u)
-        return discountAmount
-    discountAmount = subTotal - DISCOUNT_1LEVEL
-    if (amountPreviousPeriod in 1_001u..10_000u)
-        return discountAmount
-    discountAmount = subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
+    var discountAmount = 0u
+    if (amountPreviousPeriod <= 1_000u) discountAmount = subTotal
+    else if (amountPreviousPeriod in 1_001u..10_000u) discountAmount = subTotal - DISCOUNT_1LEVEL
+    else if (amountPreviousPeriod > 10_000u) discountAmount = subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
     return discountAmount
 }
 
@@ -19,6 +16,9 @@ fun discountVip(discountAmount: UInt, vipUser: Boolean): UInt {
         discountVip
     } else discountAmount
 }
+
+
+
 
 fun main() {
 
