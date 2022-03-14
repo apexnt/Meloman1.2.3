@@ -15,19 +15,23 @@ fun main() {
     val checkVipUser = readLine()
     vipUser = checkVipUser == "y"
     val discountAmount = discount(amountPreviousPeriod, subTotal)
-    val vipUserAmount = discountVip(discountAmount, vipUser)
+    val vipUserAmount = discountVip(discountAmount as UInt, vipUser)
     println("Сумма к оплате: $vipUserAmount руб.")
 }
 
-fun discount(amountPreviousPeriod: UInt, subTotal: UInt): UInt {
-    var discountAmount = 0u
-    if (amountPreviousPeriod <= 1_000u) discountAmount = subTotal
-    else if (amountPreviousPeriod in 1_001u..10_000u) discountAmount = subTotal - DISCOUNT_1LEVEL
-    else if (amountPreviousPeriod > 10_000u) discountAmount = subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
-    return discountAmount
+fun discount(amountPreviousPeriod: UInt, subTotal: UInt): Any {
+    return when {
+        amountPreviousPeriod <= 1_000u -> subTotal
+        amountPreviousPeriod in 1_001u..10_000u -> subTotal - DISCOUNT_1LEVEL
+        amountPreviousPeriod > 10_000u -> subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
+        else -> {}
+    }
+
 }
 
 fun discountVip(discountAmount: UInt, vipUser: Boolean): UInt {
     return if (vipUser) discountAmount - (discountAmount / 100u)
     else discountAmount
 }
+
+
