@@ -1,6 +1,8 @@
 const val PRICE_UNIT = 1000u
 const val DISCOUNT_1LEVEL = 10u
 const val DISCOUNT_2LEVEL = 5u
+const val DISCOUNT_3LEVEL = 15u
+
 
 fun main() {
     println("Добро пожаловать в магазин музыкальных альбомов МЕЛОДИЯ !")
@@ -23,7 +25,8 @@ fun discount(amountPreviousPeriod: UInt, subTotal: UInt): Any {
     return when {
         amountPreviousPeriod <= 1_000u -> subTotal
         amountPreviousPeriod in 1_001u..10_000u -> subTotal - DISCOUNT_1LEVEL
-        amountPreviousPeriod > 10_000u -> subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
+        amountPreviousPeriod in 10_000u..15_000u -> subTotal - (subTotal * DISCOUNT_2LEVEL / 100u)
+        amountPreviousPeriod > 15_000u -> subTotal - (subTotal * DISCOUNT_3LEVEL / 100u)
         else -> {}
     }
 
